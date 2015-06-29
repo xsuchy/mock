@@ -1,10 +1,3 @@
-# next four lines substituted by autoconf
-%define major @RELEASE_MAJOR@
-%define minor @RELEASE_MINOR@
-%define sub @RELEASE_SUBLEVEL@
-%define extralevel @RELEASE_RPM_EXTRALEVEL@
-%define release_version %{major}.%{minor}.%{sub}%{extralevel}
-
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %if 0%{?fedora} > 21
@@ -26,7 +19,7 @@
 
 Summary: Builds packages inside chroots
 Name: mock
-Version: %{release_version}
+Version: 1.2.10
 Release: 1%{?dist}
 License: GPLv2+
 Source: https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
@@ -77,7 +70,7 @@ Requires: dnf
 Requires: dnf-plugins-core
 Requires: btrfs-progs
 %endif
-%if 0%{?rhel} >= 7
+%if 0%{?rhel} >= 0
 Requires: btrfs-progs
 %endif
 
@@ -118,6 +111,7 @@ done
 %endif
 
 %build
+autogen.sh
 autoreconf -vif
 %configure
 make
@@ -148,7 +142,6 @@ fi
 %if 0%{?rhel} == 6
     # can be removed when yum-utils >= 1.1.31 lands in el6
     echo "config_opts['plugin_conf']['package_state_enable'] = False" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
-    echo "config_opts['use_nspawn'] = False" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
 %endif
 %if 0%{?fedora} > 21
     echo "config_opts['yum_command'] = '/usr/bin/yum-deprecated'" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
@@ -210,7 +203,6 @@ fi
 # docs
 %{_mandir}/man1/mock.1*
 %{_mandir}/man1/mockchain.1*
-%doc ChangeLog
 
 # cache & build dirs
 %defattr(0775, root, mock, 02775)

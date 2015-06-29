@@ -5,14 +5,9 @@ SUBDIRS =
 
 # dont move these 5 lines, as this is how we override the autoconf version and package name
 RELEASE_NAME=@RELEASE_NAME@
-RELEASE_MAJOR=@RELEASE_MAJOR@
-RELEASE_MINOR=@RELEASE_MINOR@
-RELEASE_SUBLEVEL=@RELEASE_SUBLEVEL@
-RELEASE_EXTRALEVEL=@RELEASE_EXTRALEVEL@
 
-RELEASE_VERSION = $(RELEASE_MAJOR).$(RELEASE_MINOR).$(RELEASE_SUBLEVEL)$(RELEASE_EXTRALEVEL)
-RELEASE_STRING = $(RELEASE_NAME)-$(RELEASE_VERSION)
-VERSION = $(RELEASE_VERSION)
+VERSION = @VERSION@
+RELEASE_STRING = $(RELEASE_NAME)-$(VERSION)
 PACKAGE = $(RELEASE_NAME)
 
 CLEANFILES=mock-*.tar.gz mock-*.tar.bz2 mock-*.rpm _buildtemp version tests/daemontest
@@ -80,9 +75,7 @@ mockbuild_PYTHON = \
 
 CLEANFILES += py/*.pyc py/mockbuild/*.pyc py/mockbuild/plugins/*.pyc
 
-dist: ChangeLog AUTHORS
-ChangeLog:
-	(GIT_DIR=.git git log > .changelog.tmp && mv .changelog.tmp ChangeLog; rm -f .changelog.tmp) || (touch ChangeLog; echo 'git directory not found: installing possibly empty changelog.' >&2)
+dist: AUTHORS
 
 AUTHORS:
 	(GIT_DIR=.git git log | grep ^Author | sort |uniq > .authors.tmp && mv .authors.tmp AUTHORS; rm -f .authors.tmp) || (touch AUTHORS; echo 'git directory not found: installing possibly empty AUTHORS.' >&2)
@@ -91,7 +84,7 @@ REPLACE_VARS_ON_INSTALL=$(sbindir)/mock.py $(sbindir)/mockchain.py
 install-exec-hook:
 	for i in $(REPLACE_VARS_ON_INSTALL); do      \
 		file=$(DESTDIR)/$$i			;\
-                perl -p -i -e 's|^__VERSION__\s*=.*|__VERSION__="$(RELEASE_VERSION)"|' $$file ;\
+                perl -p -i -e 's|^__VERSION__\s*=.*|__VERSION__="$(VERSION)"|' $$file ;\
                 perl -p -i -e 's|^SYSCONFDIR\s*=.*|SYSCONFDIR="$(sysconfdir)"|' $$file        ;\
                 perl -p -i -e 's|^PYTHONDIR\s*=.*|PYTHONDIR="$(pythondir)"|' $$file           ;\
                 perl -p -i -e 's|^PKGPYTHONDIR\s*=.*|PKGPYTHONDIR="$(mockbuilddir)"|' $$file  ;\
