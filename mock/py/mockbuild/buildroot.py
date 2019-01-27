@@ -252,6 +252,7 @@ class Buildroot(object):
             self.pkg_manager.init_install_output += self.pkg_manager.execute(*cmd, returnOutput=1)
 
         cmd = self.config['chroot_setup_cmd']
+        import pdb; pdb.set_trace()
         if cmd:
             if isinstance(cmd, util.basestring):
                 cmd = cmd.split()
