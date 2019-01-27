@@ -46,6 +46,8 @@ in Mock config.""")
         return Dnf(config_opts, buildroot, plugins, bootstrap_buildroot)
     elif pm == 'microdnf':
         return MicroDnf(config_opts, buildroot, plugins, bootstrap_buildroot)
+    elif pm == 'null':
+        return Null(config_opts, buildroot, plugins, bootstrap_buildroot)
     else:
         # TODO specific exception type
         raise Exception('Unrecognized package manager')
@@ -318,6 +320,30 @@ def _check_missing(output):
             if msg in line.lower():
                 raise BuildError('\n'.join(output.split('\n')[i:]))
 
+class Null(_PackageManager):
+    name = ''
+    support_installroot = True
+
+    def __init__(self, config, buildroot, plugins, bootstrap_buildroot):
+        super(Dnf, self).__init__(config, buildroot, plugins, bootstrap_buildroot)
+        self.pm = config['package_manager']
+        self.command = config['pm_command']
+        self.install_command = config['pm_install_command']
+        self.builddep_command = config['pm_builddep_command']
+        # the command in bootstrap may not exists yet
+        if bootstrap_buildroot is None:
+            self._check_command() 
+        #self.resolvedep_command = [self.command, 'repoquery', '--resolve', '--requires']
+
+    @traceLog()
+    def build_invocation(self, *args):
+        pass
+
+    def initialize_config(self):
+        pass
+
+    def _check_command(self):
+        pass
 
 class Dnf(_PackageManager):
     name = 'dnf'
