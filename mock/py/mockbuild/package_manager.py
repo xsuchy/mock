@@ -129,6 +129,7 @@ class _PackageManager(object):
             if not self.support_installroot:
                 out = util.do(invocation, env=env, chrootPath=self.buildroot.make_chroot_path(), **kwargs)
             elif self.bootstrap_buildroot is None:
+                import pdb; pdb.set_trace()
                 out = util.do(invocation, env=env, **kwargs)
             else:
                 out = util.do(invocation, env=env, chrootPath=self.bootstrap_buildroot.make_chroot_path(), **kwargs)
