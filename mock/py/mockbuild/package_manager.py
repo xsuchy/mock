@@ -19,6 +19,7 @@ from .trace_decorator import traceLog
 
 def package_manager(config_opts, buildroot, plugins, bootstrap_buildroot=None):
     pm = config_opts.get('package_manager', 'yum')
+    import pdb; pdb.set_trace()
     if pm == 'yum':
         return Yum(config_opts, buildroot, plugins, bootstrap_buildroot)
     elif pm == 'dnf':
