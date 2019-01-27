@@ -321,15 +321,15 @@ def _check_missing(output):
                 raise BuildError('\n'.join(output.split('\n')[i:]))
 
 class Null(_PackageManager):
-    name = ''
+    name = 'null'
     support_installroot = True
 
     def __init__(self, config, buildroot, plugins, bootstrap_buildroot):
         super(Dnf, self).__init__(config, buildroot, plugins, bootstrap_buildroot)
         self.pm = config['package_manager']
-        self.command = config['pm_command']
-        self.install_command = config['pm_install_command']
-        self.builddep_command = config['pm_builddep_command']
+        self.command = config['null_command']
+        self.install_command = config['null_install_command']
+        self.builddep_command = config['null_builddep_command']
         # the command in bootstrap may not exists yet
         if bootstrap_buildroot is None:
             self._check_command() 
