@@ -326,7 +326,7 @@ class Null(_PackageManager):
     support_installroot = True
 
     def __init__(self, config, buildroot, plugins, bootstrap_buildroot):
-        super(Dnf, self).__init__(config, buildroot, plugins, bootstrap_buildroot)
+        super(Null, self).__init__(config, buildroot, plugins, bootstrap_buildroot)
         self.pm = config['package_manager']
         self.command = config['null_command']
         self.install_command = config['null_install_command']
