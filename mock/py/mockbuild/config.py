@@ -93,6 +93,7 @@ def setup_default_config_opts():
     config_opts['online'] = True
     config_opts['isolation'] = None
     config_opts['use_nspawn'] = None
+    config_opts['pivot_root_chroot'] = False
     config_opts['rpmbuild_networking'] = False
     config_opts['nspawn_args'] = ['--capability=cap_ipc_lock']
     # FIXME disable as default because of https://github.com/rpm-software-management/mock/issues/1641

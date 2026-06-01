@@ -412,6 +412,9 @@ class Buildroot(object):
         # implemented).
         assert "chrootPath" not in kwargs
 
+        # Set pivot_root_chroot before delegating to bootstrap
+        kwargs.setdefault("pivot_root_chroot", self.config.get("pivot_root_chroot", False))
+
         if self.bootstrap_buildroot:
             with self.mounts.buildroot_in_bootstrap_mounted():
                 return self.bootstrap_buildroot.doChroot(
@@ -434,6 +437,7 @@ class Buildroot(object):
 
         kargs.setdefault("nspawn_args", [])
         kargs["nspawn_args"].extend(self.config.get("nspawn_args", []))
+        kargs.setdefault("pivot_root_chroot", self.config.get("pivot_root_chroot", False))
 
         try:
             result = util.do_with_status(command, chrootPath=self.make_chroot_path(),

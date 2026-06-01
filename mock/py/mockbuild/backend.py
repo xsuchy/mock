@@ -371,6 +371,7 @@ class Commands(object):
                                cwd=cwd,
                                nspawn_args=self.config.get("nspawn_args", []),
                                unshare_net=self.private_network,
+                               pivot_root_chroot=self.config.get("pivot_root_chroot", False),
                                cmd=cmd)
         finally:
             log.debug("shell: unmounting all filesystems")
